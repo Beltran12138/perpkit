@@ -7,6 +7,7 @@ const LINKS = [
   { href: '/', label: 'Compare' },
   { href: '/learn', label: 'Learn' },
   { href: '/calculator', label: 'Calculator' },
+  { href: '/history', label: 'History' },
 ] as const
 
 export function NavBar() {

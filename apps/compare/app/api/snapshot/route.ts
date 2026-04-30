@@ -1,4 +1,4 @@
-import { sql } from '../../../lib/db'
+import { getDb } from '../../../lib/db'
 
 interface LiveRate {
   exchange: string
@@ -37,6 +37,7 @@ export async function POST(req: Request) {
     return Response.json({ inserted: 0 })
   }
 
+  const sql = getDb()
   await sql`
     INSERT INTO funding_snapshots (exchange, symbol, rate, next_funding_time)
     SELECT t.exchange, 'BTC', t.rate, t.next_funding_time

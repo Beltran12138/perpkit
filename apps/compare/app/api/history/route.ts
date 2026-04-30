@@ -1,9 +1,10 @@
-import { sql } from '../../../lib/db'
+import { getDb } from '../../../lib/db'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const days = Math.min(parseInt(searchParams.get('days') ?? '7', 10), 30)
 
+  const sql = getDb()
   const rows = await sql`
     SELECT exchange, rate, recorded_at
     FROM funding_snapshots
