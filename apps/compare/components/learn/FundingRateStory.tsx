@@ -17,7 +17,8 @@ export function FundingRateStory() {
 
   // Fetch live rates once on mount
   useEffect(() => {
-    fetch('/api/funding-rates')
+    const controller = new AbortController()
+    fetch('/api/funding-rates', { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         return res.json() as Promise<LiveResult[]>
@@ -26,7 +27,10 @@ export function FundingRateStory() {
         const rates = data.filter((r): r is FundingRate => !('error' in r))
         setLiveRates(rates)
       })
-      .catch(() => setLiveError(true))
+      .catch((err) => {
+        if (err.name !== 'AbortError') setLiveError(true)
+      })
+    return () => controller.abort()
   }, [])
 
   // IntersectionObserver: update activeStep when a step enters viewport
@@ -69,7 +73,7 @@ export function FundingRateStory() {
       <div className="w-80 flex-shrink-0">
         <div className="sticky top-8">
           <FundingRateViz
-            vizMode={STEPS[activeStep].vizMode}
+            vizMode={STEPS[activeStep]?.vizMode ?? STEPS[0].vizMode}
             longRatio={longRatio}
             onLongRatioChange={setLongRatio}
             liveRates={liveRates}
