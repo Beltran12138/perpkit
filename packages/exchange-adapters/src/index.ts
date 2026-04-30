@@ -1,4 +1,6 @@
 export { BinanceAdapter } from './binance'
 export { OkxAdapter } from './okx'
 export { GateAdapter } from './gate'
+export { HyperliquidAdapter } from './hyperliquid'
+export { DydxAdapter } from './dydx'
 export type { ExchangeAdapter } from './types'

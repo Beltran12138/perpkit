@@ -1,13 +1,21 @@
 import { NextResponse } from 'next/server'
-import { BinanceAdapter, OkxAdapter, GateAdapter } from '@perpkit/exchange-adapters'
+import { BinanceAdapter, OkxAdapter, GateAdapter, HyperliquidAdapter, DydxAdapter } from '@perpkit/exchange-adapters'
 import type { ExchangeName } from '@perpkit/types'
 
-const adapters = [new BinanceAdapter(), new OkxAdapter(), new GateAdapter()]
+const adapters = [
+  new BinanceAdapter(),
+  new OkxAdapter(),
+  new GateAdapter(),
+  new HyperliquidAdapter(),
+  new DydxAdapter(),
+]
 
 const SYMBOLS: Record<ExchangeName, string> = {
   binance: 'BTCUSDT',
   okx: 'BTC-USDT-SWAP',
   gate: 'BTC_USDT',
+  hyperliquid: 'BTC',
+  dydx: 'BTC',
 }
 
 export async function GET() {
