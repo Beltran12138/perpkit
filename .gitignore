@@ -1,6 +1,8 @@
 node_modules
 .next
+out
 dist
 .turbo
 .env
 .env.local
+*.local
