@@ -1,4 +1,4 @@
-export type ExchangeName = 'binance' | 'okx' | 'gate'
+export type ExchangeName = 'binance' | 'okx' | 'gate' | 'hyperliquid' | 'dydx'
 
 export interface FundingRate {
   exchange: ExchangeName
