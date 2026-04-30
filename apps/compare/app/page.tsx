@@ -1,5 +1,6 @@
 import { FundingRateTable } from '../components/FundingRateTable'
 import { FeeComparisonTable } from '../components/FeeComparisonTable'
+import { TerminologyTable } from '../components/TerminologyTable'
 
 export default function Page() {
   return (
@@ -10,6 +11,7 @@ export default function Page() {
       </p>
       <FundingRateTable />
       <FeeComparisonTable />
+      <TerminologyTable />
     </main>
   )
 }
