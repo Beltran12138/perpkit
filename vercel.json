@@ -1,6 +1,0 @@
-{
-  "buildCommand": "pnpm build --filter=@perpkit/compare",
-  "installCommand": "pnpm install",
-  "outputDirectory": "apps/compare/.next",
-  "framework": "nextjs"
-}
