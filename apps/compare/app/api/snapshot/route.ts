@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   const sql = getDb()
   await sql`
     INSERT INTO funding_snapshots (exchange, symbol, rate, next_funding_time)
-    SELECT t.exchange, 'BTC', t.rate, t.next_funding_time
+    SELECT t.exchange, 'BTC', t.rate, t."nextFundingTime"
     FROM jsonb_to_recordset(${JSON.stringify(rates)}::jsonb)
       AS t(exchange text, rate float8, "nextFundingTime" bigint)
   `
