@@ -7,9 +7,9 @@ import {
 } from '../funding-formula'
 
 describe('simulateRates', () => {
-  it('longRatio=0.5 → all rates near 0', () => {
+  it('longRatio=0.5 → balanced market rates', () => {
     const rates = simulateRates(0.5)
-    expect(rates.binance).toBeCloseTo(0, 6)
+    expect(rates.binance).toBeCloseTo(0.0001, 5)
     expect(rates.hyperliquid).toBeCloseTo(0, 6)
     expect(rates.dydx).toBeCloseTo(0, 6)
   })

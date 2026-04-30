@@ -28,7 +28,7 @@ export function simulateRates(
 ): Record<'binance' | 'hyperliquid' | 'dydx', number> {
   const premiumIndex = (longRatio - 0.5) * 0.004
   return {
-    binance: calcBinanceRate(premiumIndex, 0),
+    binance: calcBinanceRate(premiumIndex),
     hyperliquid: calcHyperliquidRate(premiumIndex),
     dydx: calcDydxRate(premiumIndex),
   }
