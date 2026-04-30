@@ -16,7 +16,7 @@ export async function GET() {
 
   const data = results.map((r, i) => {
     if (r.status === 'fulfilled') return r.value
-    return { exchange: adapters[i].name, error: (r.reason as Error).message }
+    return { exchange: adapters[i].name, error: r.reason instanceof Error ? r.reason.message : String(r.reason) }
   })
 
   return NextResponse.json(data, {
