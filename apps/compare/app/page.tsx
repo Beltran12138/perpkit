@@ -1,4 +1,5 @@
 import { FundingRateTable } from '../components/FundingRateTable'
+import { FeeComparisonTable } from '../components/FeeComparisonTable'
 
 export default function Page() {
   return (
@@ -8,6 +9,7 @@ export default function Page() {
         Perpetual futures exchange comparison — Binance · OKX · Gate
       </p>
       <FundingRateTable />
+      <FeeComparisonTable />
     </main>
   )
 }
