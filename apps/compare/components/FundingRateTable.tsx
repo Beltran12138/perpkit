@@ -20,14 +20,22 @@ function formatTime(ms: number): string {
 export function FundingRateTable() {
   const [rates, setRates] = useState<RateResult[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
 
   async function fetchRates() {
-    const res = await fetch('/api/funding-rates')
-    const data = await res.json() as RateResult[]
-    setRates(data)
-    setLastUpdate(new Date())
-    setLoading(false)
+    try {
+      const res = await fetch('/api/funding-rates')
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json() as RateResult[]
+      setRates(data)
+      setLastUpdate(new Date())
+      setFetchError(null)
+    } catch (e) {
+      setFetchError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -46,6 +54,8 @@ export function FundingRateTable() {
       </div>
       {loading ? (
         <div className="text-gray-400 text-sm">Loading...</div>
+      ) : fetchError ? (
+        <div className="text-red-400 text-sm">Failed to load: {fetchError}</div>
       ) : (
         <table className="w-full text-sm">
           <thead>
