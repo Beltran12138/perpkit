@@ -17,6 +17,7 @@ export class HyperliquidAdapter implements ExchangeAdapter {
     ]
     const idx = meta.universe.findIndex((a) => a.name === symbol)
     if (idx === -1) throw new Error(`${symbol} not found on Hyperliquid`)
+    if (!ctxs[idx]) throw new Error(`Hyperliquid: ctxs array shorter than universe (idx=${idx})`)
     const rate = parseFloat(ctxs[idx].funding)
     if (isNaN(rate)) throw new Error(`Hyperliquid: invalid funding rate "${ctxs[idx].funding}"`)
     const nextFundingTime = Math.ceil(Date.now() / 3_600_000) * 3_600_000

@@ -11,14 +11,16 @@ export class DydxAdapter implements ExchangeAdapter {
     )
     if (!res.ok) throw new Error(`dYdX API error: ${res.status}`)
     const { markets } = await res.json() as {
-      markets: Record<string, { nextFundingRate: string; status: string }>
+      markets: Record<string, { nextFundingRate: string; status: string; nextFundingAt?: string }>
     }
     const market = markets[dydxSymbol]
     if (!market) throw new Error(`${dydxSymbol} not found on dYdX`)
     const rate1h = parseFloat(market.nextFundingRate)
     if (isNaN(rate1h)) throw new Error(`dYdX: invalid funding rate "${market.nextFundingRate}"`)
     const rate8h = rate1h * 8
-    const nextFundingTime = Math.ceil(Date.now() / 3_600_000) * 3_600_000
+    const nextFundingTime = market.nextFundingAt
+      ? new Date(market.nextFundingAt).getTime()
+      : Math.ceil(Date.now() / 3_600_000) * 3_600_000
     return { exchange: 'dydx', symbol: dydxSymbol, rate: rate8h, nextFundingTime, fetchedAt: Date.now() }
   }
 

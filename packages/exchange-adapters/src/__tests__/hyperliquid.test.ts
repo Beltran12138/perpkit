@@ -49,4 +49,9 @@ describe('HyperliquidAdapter', () => {
     expect(result.takerFee).toBe(0.0005)
     expect(Array.isArray(result.vipTiers)).toBe(true)
   })
+
+  it('throws on HTTP error', async () => {
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 503 } as Response)
+    await expect(adapter.getFundingRate('BTC')).rejects.toThrow('Hyperliquid API error: 503')
+  })
 })

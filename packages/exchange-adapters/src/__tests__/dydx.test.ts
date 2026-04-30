@@ -20,6 +20,7 @@ describe('DydxAdapter', () => {
           'BTC-USD': {
             ticker: 'BTC-USD',
             nextFundingRate: '0.000010',
+            nextFundingAt: new Date(Math.ceil(Date.now() / 3_600_000) * 3_600_000).toISOString(),
             status: 'ACTIVE',
           },
         },
@@ -51,5 +52,10 @@ describe('DydxAdapter', () => {
     expect(result.makerFee).toBe(0.0002)
     expect(result.takerFee).toBe(0.0005)
     expect(Array.isArray(result.vipTiers)).toBe(true)
+  })
+
+  it('throws on HTTP error', async () => {
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 503 } as Response)
+    await expect(adapter.getFundingRate('BTC')).rejects.toThrow('dYdX API error: 503')
   })
 })
