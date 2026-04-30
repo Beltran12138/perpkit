@@ -13,10 +13,12 @@ export class BinanceAdapter implements ExchangeAdapter {
       lastFundingRate: string
       nextFundingTime: number
     }
+    const rate = parseFloat(data.lastFundingRate)
+    if (isNaN(rate)) throw new Error(`Binance: invalid funding rate "${data.lastFundingRate}"`)
     return {
       exchange: 'binance',
       symbol: data.symbol,
-      rate: parseFloat(data.lastFundingRate),
+      rate,
       nextFundingTime: data.nextFundingTime,
       fetchedAt: Date.now(),
     }
