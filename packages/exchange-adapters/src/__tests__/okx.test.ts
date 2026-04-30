@@ -31,6 +31,14 @@ describe('OkxAdapter', () => {
     expect(typeof result.fetchedAt).toBe('number')
   })
 
+  it('throws on OKX API-level error (HTTP 200, code !== 0)', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ code: '50001', msg: 'Service unavailable', data: [] }),
+    } as Response)
+    await expect(adapter.getFundingRate('BTC-USDT-SWAP')).rejects.toThrow('OKX API error: code 50001')
+  })
+
   it('getFees returns correct shape', async () => {
     const result = await adapter.getFees()
     expect(result.exchange).toBe('okx')

@@ -12,6 +12,8 @@ export class OkxAdapter implements ExchangeAdapter {
       code: string
       data: Array<{ fundingRate: string; nextFundingTime: string; instId: string }>
     }
+    if (data.code !== '0') throw new Error(`OKX API error: code ${data.code}`)
+    if (!data.data?.[0]) throw new Error('OKX: empty response data')
     const latest = data.data[0]
     const rate = parseFloat(latest.fundingRate)
     if (isNaN(rate)) throw new Error(`OKX: invalid funding rate "${latest.fundingRate}"`)

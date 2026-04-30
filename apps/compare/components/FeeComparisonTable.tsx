@@ -28,11 +28,11 @@ export function FeeComparisonTable() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         return res.json() as Promise<FeeResult[]>
       })
-      .then((data) => { setFees(data); setLoading(false) })
+      .then((data) => { setFees(data) })
       .catch((e: unknown) => {
         setFetchError(e instanceof Error ? e.message : String(e))
-        setLoading(false)
       })
+      .finally(() => { setLoading(false) })
   }, [])
 
   if (loading) return <div className="text-gray-400 text-sm mb-8">Loading fees...</div>
