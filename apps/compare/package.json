@@ -9,6 +9,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@perpkit/exchange-adapters": "workspace:*",
     "@perpkit/types": "workspace:*",
     "next": "^15.0.0",
