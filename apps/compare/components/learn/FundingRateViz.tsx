@@ -23,6 +23,14 @@ function formatCountdown(nextFundingTime: number): string {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
+const EXCHANGES = ['binance', 'hyperliquid', 'dydx'] as const
+
+const EXCHANGE_LABELS: Record<string, string> = {
+  binance: 'Binance',
+  hyperliquid: 'Hyperliquid',
+  dydx: 'dYdX',
+}
+
 const FORMULA_INFO = [
   {
     exchange: 'Binance',
@@ -48,7 +56,7 @@ function RateRow({ label, rate }: { label: string; rate: number }) {
   const positive = rate >= 0
   return (
     <div className="flex justify-between items-center py-1">
-      <span className="text-sm capitalize text-gray-300">{label}</span>
+      <span className="text-sm text-gray-300">{EXCHANGE_LABELS[label] ?? label}</span>
       <span
         className={`font-mono text-sm font-bold ${
           positive ? 'text-green-400' : 'text-red-400'
@@ -69,11 +77,10 @@ export function FundingRateViz({
   liveError,
 }: FundingRateVizProps) {
   const simRates = simulateRates(longRatio)
-  const EXCHANGES = ['binance', 'hyperliquid', 'dydx'] as const
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-700 p-6 space-y-5">
-      {liveError && (
+      {liveError && vizMode !== 'formula' && (
         <div className="text-xs text-orange-400 bg-orange-950/50 rounded px-3 py-1.5">
           Live data unavailable — showing simulation
         </div>
@@ -152,16 +159,16 @@ export function FundingRateViz({
           <div className="text-xs text-gray-400 uppercase tracking-widest">
             Current Rate
           </div>
-          {(liveRates ?? []).map((r) => (
+          {(liveRates && !liveError ? liveRates : []).map((r) => (
             <RateRow key={r.exchange} label={r.exchange} rate={r.rate} />
           ))}
           <div className="border-t border-gray-700 pt-3 space-y-1">
             <div className="text-xs text-gray-400 uppercase tracking-widest mb-2">
               Next Settlement
             </div>
-            {(liveRates ?? []).map((r) => (
+            {(liveRates && !liveError ? liveRates : []).map((r) => (
               <div key={r.exchange} className="flex justify-between items-center py-1">
-                <span className="text-sm capitalize text-gray-300">{r.exchange}</span>
+                <span className="text-sm text-gray-300">{EXCHANGE_LABELS[r.exchange] ?? r.exchange}</span>
                 <span className="font-mono text-sm text-gray-200">
                   {formatCountdown(r.nextFundingTime)}
                 </span>
