@@ -40,6 +40,15 @@ export function FeeComparisonTable() {
 
   const successFees = fees.filter((f): f is FeeStructure => !isError(f))
 
+  if (successFees.length === 0) {
+    return (
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-white mb-3">Fee Structure</h2>
+        <div className="text-red-400 text-sm">All exchanges unavailable</div>
+      </section>
+    )
+  }
+
   return (
     <section className="mb-8">
       <h2 className="text-lg font-semibold text-white mb-3">Fee Structure</h2>
